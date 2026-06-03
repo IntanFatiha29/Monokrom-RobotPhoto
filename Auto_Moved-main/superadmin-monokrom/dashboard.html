@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Superadmin Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/stylesupers_monokrom.css">
+</head>
+<body>
+
+<!-- ── Header ── -->
+<div class="page-header">
+  <div class="header-left">
+    <div class="header-logo">
+      <img src="../assets/img/logo.png" alt="Logo" onerror="this.src='../img/logo.png'" style="width: 28px; height: 28px; object-fit: contain;">
+      <span style="font-size: 16px; font-weight: 800; color: #000000; letter-spacing: 0.5px;">PHOTOBOOTH</span>
+    </div>
+    <div class="header-sep"></div>
+    <div class="header-title">Superadmin Panel</div>
+  </div>
+</div>
+
+<div class="dashboard-viewport">
+  <div class="admin-container">
+    <h1 style="font-size: 1.8rem; margin-bottom: 16px;">Kelola Admin Cabang</h1>
+
+    <div id="adminList"></div>
+
+    <button class="btn-primary" onclick="goCreate()">Buat Admin Baru</button>
+    <button class="btn-secondary" onclick="goStat()">Lihat Statistik Cabang</button>
+  </div>
+</div>
+
+<script>
+let admins = JSON.parse(localStorage.getItem("adminAccounts")) || [];
+const container = document.getElementById("adminList");
+
+if (admins.length === 0) {
+  container.innerHTML = `<div style="text-align:center;color:var(--text-muted);font-size:0.85rem;padding:12px 0;">Belum ada akun admin</div>`;
+} else {
+  admins.forEach(admin => {
+    container.innerHTML += `
+      <div class="user-row">
+        <strong>${admin.username}</strong>
+        <button onclick="deleteAdmin(${admin.id})">Hapus</button>
+      </div>
+    `;
+  });
+}
+
+function deleteAdmin(id){
+  if (confirm("Apakah Anda yakin ingin menghapus admin ini?")) {
+    admins = admins.filter(a => a.id !== id);
+    localStorage.setItem("adminAccounts", JSON.stringify(admins));
+    location.reload();
+  }
+}
+
+function goCreate(){
+  window.location.href = "buat-admin.html";
+}
+
+function goStat(){
+  window.location.href = "statistik.html";
+}
+</script>
+
+</body>
+</html>
